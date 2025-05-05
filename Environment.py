@@ -10,7 +10,7 @@ class Environment(object):
         self.cat = cat
         self.mouse = mouse
         # the row and column indices for the nonzero grid spaces
-        self.full_state_space = [tuple(i) for i in np.transpose(np.nonzero(self.gridworld))]
+        self.full_state_space = [tuple(i) for i in np.transpose(np.nonzero(self.gridworld.grid))]
 
     def cat_reward(self, new_pos):
         # if this is the mouse (3), we terminate the game
