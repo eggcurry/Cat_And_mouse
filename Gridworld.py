@@ -42,11 +42,11 @@ class Gridworld(object):
 
     def evaluate(self, x, y):
         # returns the value of a valid space
-        if self.is_off_course(x, y):
+        if self.is_off_limits(x, y):
             return "Error not accessible to agent"
         return self.grid[y, x]
 
-    def is_off_course(self, x, y):
+    def is_off_limits(self, x, y):
         # respond true if the proposed x,y position of the grid is on the finish line
         if x >= self.right_border or x < self.left_border:
             return True

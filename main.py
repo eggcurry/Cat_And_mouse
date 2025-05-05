@@ -5,7 +5,8 @@ from MouseAgent import MouseAgent
 import numpy as np
 
 if __name__ == '__main__':
-    # or you can pass through dimensions of a randomly generated grid you wish to use
+    # set the locations where the cat and mouse should start
+    # these can be randomly generated or chosen deliberately
     cat_start_pos = (3,4)
     mouse_start_pos = (5,6)
 
@@ -17,3 +18,5 @@ if __name__ == '__main__':
     # create the two agents
     cat_agent = CatAgent(pos=cat_start_pos)
     mouse_agent = MouseAgent(pos=mouse_start_pos)
+
+    # here we probably want two policies (for each agent)

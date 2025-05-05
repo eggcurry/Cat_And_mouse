@@ -9,6 +9,8 @@ class Environment(object):
         self.gridworld = gridworld
         self.cat = cat
         self.mouse = mouse
+        # the row and column indices for the nonzero grid spaces
+        self.full_state_space = [tuple(i) for i in np.transpose(np.nonzero(self.gridworld))]
 
     def cat_reward(self, new_pos):
         # if this is the mouse (3), we terminate the game
@@ -46,8 +48,33 @@ class Environment(object):
     def run(self, cat_action, mouse_action):
         # runs one step of the simulation
         # takes in the cat_action and mouse action
-        # returns the cat reward and mouse reward respectively
+        # returns the cat position and reward and mouse position and reward (respectively) after action
+
+        # CAT TURN
+        # take action, returns new position
+        new_cat_pos = self.cat.take_turn(cat_action)
+        # if this is a valid move, we keep going
+        # otherwise the cat doesn't move (we assume it hits the wall but we don't penalize)
+        if not self.gridworld.is_off_limits(new_cat_pos):
+            self.cat.position = new_cat_pos
+        else:
+            # keep old pos
+            new_cat_pos = self.cat.position
+
+        cat_reward = self.cat_reward(new_cat_pos)
+
+        # MOUSE TURN
 
         # maybe we want a sudden change in direction with 10% change to emulate erratic behavior in mouse
-        if np.random.rand() <= 0.1:
-            pass
+        new_mouse_pos = self.mouse.take_turn(mouse_action)
+        # if this is a valid move, we keep going
+        if not self.gridworld.is_off_limits(new_mouse_pos):
+            self.mouse.position = new_mouse_pos
+            mouse_reward = self.cat_reward(new_cat_pos)
+        else:
+            # we want the negative reward for trying to hit the wall or obstacle
+            mouse_reward = self.cat_reward(new_cat_pos)
+            # if the move was invalid, we stay where we were
+            new_mouse_pos = self.mouse.position
+
+        return new_cat_pos, cat_reward, new_mouse_pos, mouse_reward
