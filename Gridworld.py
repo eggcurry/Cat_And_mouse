@@ -1,5 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
+from matplotlib import colors
 import random
 
 class Gridworld(object):
@@ -62,7 +63,8 @@ class Gridworld(object):
     # visualize the gridworld
     def visualize(self):
         fig, ax = plt.subplots()
-        ax.imshow(self.grid, cmap='Set3')
+        cmap = colors.ListedColormap(['#4d4d9fff', '#ba6833ff', '#ff812dff', '#ac9d93ff'])
+        ax.imshow(self.grid, cmap=cmap)
         ax.grid(which='minor', color='black', linestyle='-', linewidth=1)
 
         return plt.show()
